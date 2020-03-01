@@ -28,18 +28,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-             .antMatchers(HttpMethod.GET,"/").permitAll()                  
-                 .antMatchers(HttpMethod.GET, "/agendas").permitAll()
-                .antMatchers(HttpMethod.GET,"/listacantina").hasRole("ADMIN")
-    //            .antMatchers(HttpMethod.GET, "/formulario").hasRole("ADMIN")
-    //          .antMatchers(HttpMethod.POST, "/editsave").hasRole("ADMIN")
-     //           .antMatchers(HttpMethod.POST, "/editsave").hasRole("ADMIN")
-   //             .antMatchers(HttpMethod.GET, "/edite/{id_c}").hasRole("ADMIN")
- //               .antMatchers(HttpMethod.GET, "/deletar/{id_c}").hasRole("ADMIN")                
-                .anyRequest().authenticated()
-		.and().formLogin().loginPage("/entrar").permitAll()
-		.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+		http.csrf().disable().authorizeRequests()
+        .antMatchers(HttpMethod.GET,"/").permitAll()                  
+            .antMatchers(HttpMethod.GET, "/agendas_User").permitAll()
+            .antMatchers(HttpMethod.POST, "/agendas_User").permitAll()
+            .antMatchers(HttpMethod.GET, "/newagenda").hasRole("ADMIN")
+            .antMatchers(HttpMethod.POST, "/newagenda").hasRole("ADMIN")
+            .antMatchers(HttpMethod.POST, "/agendas").hasRole("ADMIN")
+            .antMatchers(HttpMethod.POST, "/agendas").hasRole("ADMIN")  
+           .antMatchers(HttpMethod.GET,"/listacantina").hasRole("USER")            
+           .anyRequest().authenticated()
+	.and().formLogin().loginPage("/entrar").permitAll()
+	.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+   
     }
 
 	@Override

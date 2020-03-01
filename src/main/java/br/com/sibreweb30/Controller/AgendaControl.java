@@ -27,52 +27,74 @@ import br.com.sibreweb30.Service.AgendaService;
 @Controller
 public class AgendaControl {
     
-    @Autowired
-    private AgendaService Pservice;
-    
-    
-      @GetMapping({"/","/index"})
-    public String Incio(){
-        return "index";
-    }
-    
-     @RequestMapping(value="/agendas", method=RequestMethod.GET)
-    public ModelAndView getAgenda(){
-        ModelAndView mv = new ModelAndView("agenda.html");
-        List<Agenda> agendas = Pservice.listAll();
-        mv.addObject("agenda", agendas);
-        return mv;
-    }
-     @RequestMapping(value="/agendas/{id}", method=RequestMethod.GET)
-    public ModelAndView getAgendaDetails(@PathVariable("id") long id){
-        ModelAndView mv = new ModelAndView("agendaDetails.html");
-        Agenda agenda = Pservice.getById(id);
-        mv.addObject("agenda", agenda);
-        return mv;
-    }
-
-     @RequestMapping(value="/newagenda", method=RequestMethod.GET)
-    public String getAgendaForm(){
-        return "agendaForm";
-    }
-    
-    @RequestMapping(value="/newagenda", method=RequestMethod.POST)
-    public String saveAgenda(@Valid Agenda agendas, BindingResult result, RedirectAttributes attributes){
-        if(result.hasErrors()){
-            attributes.addFlashAttribute("mensagem", "Verifique se os campos obrigatórios foram preenchidos!");
-            return "redirect:/newagenda";
-        }
-        
-        agendas.setData(LocalDate.now());
-        Pservice.saveOrUpdate(agendas);
-        return "redirect:/agendas";
-    }
-    
-//    Metodo para excluir dados do cadastro
-    @GetMapping("/remover/{id}")
-    public String excluir(@PathVariable long id) {
-        Pservice.delete(id);
-        return "redirect:/agendas";
-    }
-    
+	 @Autowired
+	    private AgendaService Pservice;
+	    
+	    
+	      @GetMapping({"/","/index"})
+	    public String Incio(){
+	        return "index";
+	    }
+	    
+	      //Metodo para listar posts da agenda sem Edição
+	     @RequestMapping(value="/agendas", method=RequestMethod.GET)
+	    public ModelAndView getAgenda(){
+	        ModelAndView mv = new ModelAndView("agenda.html");
+	        List<Agenda> agendas = Pservice.listAll();
+	        mv.addObject("agenda", agendas);
+	        return mv;
+	    }   
+	     
+	     //Metodo para listar posts da agenda sem Edição
+	     @RequestMapping(value="/agendas_User", method=RequestMethod.GET)
+	    public ModelAndView getAgenda_User(){
+	        ModelAndView mv = new ModelAndView("agenda_User.html");
+	        List<Agenda> agendas = Pservice.listAll();
+	        mv.addObject("agenda", agendas);
+	        return mv;
+	    }   
+	     
+	     // Admin
+	     @RequestMapping(value="/agendas/{id}", method=RequestMethod.GET)
+	    public ModelAndView getAgendaDetails(@PathVariable("id") long id){
+	        ModelAndView mv = new ModelAndView("agendaDetails.html");
+	        Agenda agenda = Pservice.getById(id);
+	        mv.addObject("agenda", agenda);
+	        return mv;
+	    }
+	     
+	     //User
+	     @RequestMapping(value="/agendas_User/{id}", method=RequestMethod.GET)
+	     public ModelAndView getAgendaDetails_User(@PathVariable("id") long id){
+	         ModelAndView mv = new ModelAndView("agendaDetails_User.html");
+	         Agenda agenda = Pservice.getById(id);
+	         mv.addObject("agenda", agenda);
+	         return mv;
+	     }
+	     
+	    
+	     @RequestMapping(value="/newagenda", method=RequestMethod.GET)
+	    public String getAgendaForm(){
+	        return "agendaForm";
+	    }
+	    
+	    @RequestMapping(value="/newagenda", method=RequestMethod.POST)
+	    public String saveAgenda(@Valid Agenda agendas, BindingResult result, RedirectAttributes attributes){
+	        if(result.hasErrors()){
+	            attributes.addFlashAttribute("mensagem", "Verifique se os campos obrigatórios foram preenchidos!");
+	            return "redirect:/newagenda";
+	        }
+	        
+	        agendas.setData(LocalDate.now());
+	        Pservice.saveOrUpdate(agendas);
+	        return "redirect:/agendas";
+	    }
+	    
+//	    Metodo para excluir dados do cadastro
+	    @GetMapping("/remover/{id}")
+	    public String excluir(@PathVariable long id) {
+	        Pservice.delete(id);
+	        return "redirect:/agendas";
+	    }
+ 
 }
